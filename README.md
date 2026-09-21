@@ -4,6 +4,7 @@ Prototype of a small Game
 Blueprint screenshots - 
 More detail in the pdf with screenshots as well.
 
+
 Player Blueprints-
 
 <img width="515" height="314" alt="Screenshot 2026-09-21 122251" src="https://github.com/user-attachments/assets/351fc2d0-e67a-447e-93c6-be483d763c1e" />
@@ -12,11 +13,13 @@ Player Blueprints-
 <img width="650" height="290" alt="Screenshot 2026-09-21 122427" src="https://github.com/user-attachments/assets/bb313b67-3f1d-409d-b31a-0487a5b846e0" />
 
 
+
 Hazard Blueprints-
 
 <img width="755" height="296" alt="Screenshot 2026-09-21 122539" src="https://github.com/user-attachments/assets/431e0302-ce88-437b-b0d9-f1d23db25a2e" />
 <img width="911" height="233" alt="Screenshot 2026-09-21 122628" src="https://github.com/user-attachments/assets/8a1c7b54-0410-4ebc-a75e-8b1b96075ff9" />
 <img width="901" height="393" alt="Screenshot 2026-09-21 122721" src="https://github.com/user-attachments/assets/69395cb2-3ea1-4f58-bf0f-e2787c6e3734" />
+
 
 
 Powerups Blueprints -
