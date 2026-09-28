@@ -1,7 +1,7 @@
 # Obstacle Course - Factory Pattern
 
 **Name:** Isshan Marwah  
-**Student Number:** [Your Student Number]
+**Student Number:** 100989890
 
 ## Project Description
 
