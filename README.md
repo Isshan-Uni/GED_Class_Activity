@@ -13,6 +13,12 @@ For this activity, I added a Factory Pattern to control how the powerups are spa
 
 <img width="851" height="335" alt="image" src="https://github.com/user-attachments/assets/bcdc5a56-c01e-4df9-8792-d6ec2de62085" />
 
+### Note
+
+For this build, I have not added a full UI/HUD yet. Instead, gameplay actions such as taking damage, healing, collecting a powerup, and receiving a speed boost are confirmed using Print String messages on screen. The win and lose conditions also display a message first, then close the game after a short delay.
+
+I did not have enough time to create the full UI for this activity, but I plan to add and polish it before the next activity.
+
 
 ## Factory Pattern
 
