@@ -31,13 +31,14 @@ When the player's health goes below 50, the player calls `RequestHeal` in the Ga
 
 Once a factory has been used, it is removed from the available factory array and destroyed so the same spawn location cannot be used again.
 
+### BP_PowerupFactory - SpawnPowerup Function
 <img width="971" height="496" alt="image" src="https://github.com/user-attachments/assets/dad11bcf-40a2-4f54-8161-a16af896e127" />
 
-
+### Health and Speed Factory Child Values
 <img width="860" height="144" alt="image" src="https://github.com/user-attachments/assets/57bc33f8-69e9-4fa0-8772-0d130c1c9c12" />
 <img width="758" height="148" alt="image" src="https://github.com/user-attachments/assets/2be144ee-1822-4e6b-8919-27bf0c120179" />
 
-
+### GameMode Functions
 <img width="1043" height="360" alt="image" src="https://github.com/user-attachments/assets/cef2fda6-1fb4-440c-8b11-2bb8905904c6" />
 <img width="1274" height="437" alt="image" src="https://github.com/user-attachments/assets/477716c1-2fbb-4948-b1f7-0795004c1b49" />
 
@@ -45,7 +46,15 @@ Once a factory has been used, it is removed from the available factory array and
 ## Factory Pattern Diagram
 
 <img width="958" height="587" alt="image" src="https://github.com/user-attachments/assets/222a8c7e-80de-48a0-a5b6-458eaf77617e" />
+The roles in the Factory Pattern are:
 
+- `BP_PowerupFactory` - Creator / Base Factory
+- `BP_HealthFactory` and `BP_SpeedFactory` - Concrete Factories
+- `BP_PowerUp` - Base Product
+- `BP_PowerUp_Child_HealUp` and `BP_PowerUp_Child_SpeedUp` - Concrete Products
+- `BP_FirstPersonGameMode` - Client / Manager that decides when a Factory should be used
+
+The Factory children inherit the `SpawnPowerup` function from `BP_PowerupFactory`, while each child changes the `PowerupClass` value to determine which powerup gets created.
 
 ## Reflection
 
@@ -64,10 +73,6 @@ It also makes the system easier to expand because I can add another powerup and 
 The project uses the Unreal Engine 5.8 First Person Template provided by Epic Games.
 
 No other external assets were used.
-
-## Source Files / Opening the Project
-
-The repository contains the Unreal Engine project files and Blueprint assets.
 
 ## Release
 
