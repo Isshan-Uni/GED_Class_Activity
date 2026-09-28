@@ -1,32 +1,74 @@
-# GED_Class_Activity
-Prototype of a small Game
+# Obstacle Course - Factory Pattern
 
-Blueprint screenshots - 
-More detail in the pdf with screenshots as well.
+**Name:** Isshan Marwah  
+**Student Number:** [Your Student Number]
 
+## Project Description
 
-Player Blueprints-
+This is a simple 3D obstacle-course game made in Unreal Engine 5.8. The player has to run and jump across platforms while avoiding different hazards. Some hazards damage the player, some push the player, and another can defeat the player in one hit.
 
-<img width="515" height="314" alt="Screenshot 2026-09-21 122251" src="https://github.com/user-attachments/assets/351fc2d0-e67a-447e-93c6-be483d763c1e" />
-<img width="680" height="217" alt="Screenshot 2026-09-21 121545" src="https://github.com/user-attachments/assets/112a5fdc-6c9c-40cb-b3de-6c751e5ad096" />
-<img width="748" height="190" alt="Screenshot 2026-09-21 122216" src="https://github.com/user-attachments/assets/75591e94-af20-4ded-9d12-e0115e9d19f9" />
-<img width="650" height="290" alt="Screenshot 2026-09-21 122427" src="https://github.com/user-attachments/assets/bb313b67-3f1d-409d-b31a-0487a5b846e0" />
+The player can also collect Health and Speed powerups. The goal is to reach the end of the level without losing all health or falling into the lose area.
 
+For this activity, I added a Factory Pattern to control how the powerups are spawned.
 
-
-Hazard Blueprints-
-
-<img width="755" height="296" alt="Screenshot 2026-09-21 122539" src="https://github.com/user-attachments/assets/431e0302-ce88-437b-b0d9-f1d23db25a2e" />
-<img width="911" height="233" alt="Screenshot 2026-09-21 122628" src="https://github.com/user-attachments/assets/8a1c7b54-0410-4ebc-a75e-8b1b96075ff9" />
-<img width="901" height="393" alt="Screenshot 2026-09-21 122721" src="https://github.com/user-attachments/assets/69395cb2-3ea1-4f58-bf0f-e2787c6e3734" />
+<img width="851" height="335" alt="image" src="https://github.com/user-attachments/assets/bcdc5a56-c01e-4df9-8792-d6ec2de62085" />
 
 
+## Factory Pattern
 
-Powerups Blueprints -
+I created a parent Blueprint called `BP_PowerupFactory`. It contains a `PowerupClass` variable and a `SpawnPowerup` function.
 
-<img width="686" height="242" alt="Screenshot 2026-09-21 124256" src="https://github.com/user-attachments/assets/63ac9c5b-0bc4-47a4-810e-bbaf70f8faa7" />
-<img width="650" height="241" alt="Screenshot 2026-09-21 124310" src="https://github.com/user-attachments/assets/72507066-0b7c-4c9b-b302-9f2b0e2373d7" />
-<img width="741" height="236" alt="Screenshot 2026-09-21 124249" src="https://github.com/user-attachments/assets/3c4beb5d-8460-4e24-b2b6-8036abf9c4bf" />
+I then created two child factories:
+
+- `BP_HealthFactory` - spawns the Health Powerup
+- `BP_SpeedFactory` - spawns the Speed Powerup
+
+Both children use the same spawning logic from `BP_PowerupFactory`, but their `PowerupClass` variable is set to a different powerup.
+
+The `BP_FirstPersonGameMode` stores the available factories and controls when they are used. At the start of the game, two random factories are selected to spawn powerups.
+
+When the player's health goes below 50, the player calls `RequestHeal` in the GameMode. The GameMode searches the remaining factories, finds the closest available `BP_HealthFactory`, and tells it to spawn a Health Powerup.
+
+Once a factory has been used, it is removed from the available factory array and destroyed so the same spawn location cannot be used again.
+
+<img width="971" height="496" alt="image" src="https://github.com/user-attachments/assets/dad11bcf-40a2-4f54-8161-a16af896e127" />
 
 
+<img width="860" height="144" alt="image" src="https://github.com/user-attachments/assets/57bc33f8-69e9-4fa0-8772-0d130c1c9c12" />
+<img width="758" height="148" alt="image" src="https://github.com/user-attachments/assets/2be144ee-1822-4e6b-8919-27bf0c120179" />
 
+
+<img width="1043" height="360" alt="image" src="https://github.com/user-attachments/assets/cef2fda6-1fb4-440c-8b11-2bb8905904c6" />
+<img width="1274" height="437" alt="image" src="https://github.com/user-attachments/assets/477716c1-2fbb-4948-b1f7-0795004c1b49" />
+
+
+## Factory Pattern Diagram
+
+<img width="958" height="587" alt="image" src="https://github.com/user-attachments/assets/222a8c7e-80de-48a0-a5b6-458eaf77617e" />
+
+
+## Reflection
+
+### What element of your game adopts the chosen pattern?
+
+The powerup spawning system uses the Factory Pattern. `BP_PowerupFactory` contains the common spawning functionality, while its child factories decide which type of powerup is spawned.
+
+### Why is this pattern a good choice for the associated functionality?
+
+The Factory Pattern works well because I have multiple powerups that use the same spawning process. Instead of writing separate spawning logic for each powerup, the parent Factory handles the spawning and the child Factories only decide what gets spawned.
+
+It also makes the system easier to expand because I can add another powerup and Factory child later without changing the main spawning system.
+
+## External Assets
+
+The project uses the Unreal Engine 5.8 First Person Template provided by Epic Games.
+
+No other external assets were used.
+
+## Source Files / Opening the Project
+
+The repository contains the Unreal Engine project files and Blueprint assets.
+
+## Release
+
+A packaged Windows build of the game is available in the **Releases** section of this repository.
