@@ -16,18 +16,18 @@ For this activity, I added a Factory Pattern to control how the powerups are spa
 
 ## Factory Pattern
 
-I created a parent Blueprint called `BP_PowerupFactory`. It contains a `PowerupClass` variable and a `SpawnPowerup` function.
+I created a parent Blueprint called BP_PowerupFactory. It contains a PowerupClass variable and a SpawnPowerup function.
 
 I then created two child factories:
 
-- `BP_HealthFactory` - spawns the Health Powerup
-- `BP_SpeedFactory` - spawns the Speed Powerup
+- BP_HealthFactory - spawns the Health Powerup
+- BP_SpeedFactory - spawns the Speed Powerup
 
-Both children use the same spawning logic from `BP_PowerupFactory`, but their `PowerupClass` variable is set to a different powerup.
+Both children use the same spawning logic from BP_PowerupFactory, but their PowerupClass variable is set to a different powerup.
 
-The `BP_FirstPersonGameMode` stores the available factories and controls when they are used. At the start of the game, two random factories are selected to spawn powerups.
+The BP_FirstPersonGameMode stores the available factories and controls when they are used. At the start of the game, two random factories are selected to spawn powerups.
 
-When the player's health goes below 50, the player calls `RequestHeal` in the GameMode. The GameMode searches the remaining factories, finds the closest available `BP_HealthFactory`, and tells it to spawn a Health Powerup.
+When the player's health goes below 50, the player calls RequestHeal in the GameMode. The GameMode searches the remaining factories, finds the closest available BP_HealthFactory, and tells it to spawn a Health Powerup.
 
 Once a factory has been used, it is removed from the available factory array and destroyed so the same spawn location cannot be used again.
 
@@ -48,19 +48,19 @@ Once a factory has been used, it is removed from the available factory array and
 <img width="958" height="587" alt="image" src="https://github.com/user-attachments/assets/222a8c7e-80de-48a0-a5b6-458eaf77617e" />
 The roles in the Factory Pattern are:
 
-- `BP_PowerupFactory` - Creator / Base Factory
-- `BP_HealthFactory` and `BP_SpeedFactory` - Concrete Factories
-- `BP_PowerUp` - Base Product
-- `BP_PowerUp_Child_HealUp` and `BP_PowerUp_Child_SpeedUp` - Concrete Products
-- `BP_FirstPersonGameMode` - Client / Manager that decides when a Factory should be used
+- BP_PowerupFactory - Creator / Base Factory
+- BP_HealthFactory and BP_SpeedFactory - Concrete Factories
+- BP_PowerUp - Base Product
+- BP_PowerUp_Child_HealUp and BP_PowerUp_Child_SpeedUp - Concrete Products
+- BP_FirstPersonGameMode - Client / Manager that decides when a Factory should be used
 
-The Factory children inherit the `SpawnPowerup` function from `BP_PowerupFactory`, while each child changes the `PowerupClass` value to determine which powerup gets created.
+The Factory children inherit the SpawnPowerup function from BP_PowerupFactory, while each child changes the PowerupClass value to determine which powerup gets created.
 
 ## Reflection
 
 ### What element of your game adopts the chosen pattern?
 
-The powerup spawning system uses the Factory Pattern. `BP_PowerupFactory` contains the common spawning functionality, while its child factories decide which type of powerup is spawned.
+The powerup spawning system uses the Factory Pattern. BP_PowerupFactory contains the common spawning functionality, while its child factories decide which type of powerup is spawned.
 
 ### Why is this pattern a good choice for the associated functionality?
 
@@ -70,9 +70,7 @@ It also makes the system easier to expand because I can add another powerup and 
 
 ## External Assets
 
-The project uses the Unreal Engine 5.8 First Person Template provided by Epic Games.
-
-No other external assets were used.
+No external assets were used.
 
 ## Release
 
