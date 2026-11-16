@@ -1,77 +1,119 @@
-# Obstacle Course - Factory Pattern
-
-**Name:** Isshan Marwah  
-**Student Number:** 100989890
-
 ## Project Description
 
-This is a simple 3D obstacle-course game made in Unreal Engine 5.8. The player has to run and jump across platforms while avoiding different hazards. Some hazards damage the player, some push the player, and another can defeat the player in one hit.
+The project spawns 10,000 `BP_TestActor` objects. Each actor gets a random `Score` value.
 
-The player can also collect Health and Speed powerups. The goal is to reach the end of the level without losing all health or falling into the lose area.
+The GameManager gets the total score from all of the actors.
 
-For this activity, I added a Factory Pattern to control how the powerups are spawned.
+## Gameplay Loop
 
-<img width="851" height="335" alt="image" src="https://github.com/user-attachments/assets/bcdc5a56-c01e-4df9-8792-d6ec2de62085" />
+- 10,000 `BP_TestActor` objects are spawned.
+- Each actor has a random `Score`.
+- The GameManager gets the total score.
+- The total score is printed during gameplay.
 
+## Before Optimization
 
-## Factory Pattern
+Before the optimization, the GameManager calculates the total score every frame.
 
-I created a parent Blueprint called BP_PowerupFactory. It contains a PowerupClass variable and a SpawnPowerup function.
+The GameManager uses:
 
-I then created two child factories:
+- `Event Tick`
+- `Get All Actors Of Class`
+- `For Each Loop`
+- `Cast To BP_TestActor`
+- `Score`
+- `Current Score`
 
-- BP_HealthFactory - spawns the Health Powerup
-- BP_SpeedFactory - spawns the Speed Powerup
+It finds all 10,000 TestActors, gets the score from each actor and adds them together.
 
-Both children use the same spawning logic from BP_PowerupFactory, but their PowerupClass variable is set to a different powerup.
-
-The BP_FirstPersonGameMode stores the available factories and controls when they are used. At the start of the game, two random factories are selected to spawn powerups.
-
-When the player's health goes below 50, the player calls RequestHeal in the GameMode. The GameMode searches the remaining factories, finds the closest available BP_HealthFactory, and tells it to spawn a Health Powerup.
-
-Once a factory has been used, it is removed from the available factory array and destroyed so the same spawn location cannot be used again.
-
-### BP_PowerupFactory - SpawnPowerup Function
-<img width="971" height="496" alt="image" src="https://github.com/user-attachments/assets/dad11bcf-40a2-4f54-8161-a16af896e127" />
-
-### Health and Speed Factory Child Values
-<img width="860" height="144" alt="image" src="https://github.com/user-attachments/assets/57bc33f8-69e9-4fa0-8772-0d130c1c9c12" />
-<img width="758" height="148" alt="image" src="https://github.com/user-attachments/assets/2be144ee-1822-4e6b-8919-27bf0c120179" />
-
-### GameMode Functions
-<img width="1043" height="360" alt="image" src="https://github.com/user-attachments/assets/cef2fda6-1fb4-440c-8b11-2bb8905904c6" />
-<img width="1274" height="437" alt="image" src="https://github.com/user-attachments/assets/477716c1-2fbb-4948-b1f7-0795004c1b49" />
+### Blueprint Before
+<img width="755" height="298" alt="Screenshot 2026-11-16 180639" src="https://github.com/user-attachments/assets/35fc62ca-12c0-4017-9f9a-5f6fa5e88012" />
+<img width="459" height="196" alt="Screenshot 2026-11-16 180647" src="https://github.com/user-attachments/assets/e05f994d-a18b-484b-bbe1-f980ae377653" />
+<img width="950" height="487" alt="Screenshot 2026-11-16 180627" src="https://github.com/user-attachments/assets/e75192d7-2601-4853-a5a5-18f35ed24ab8" />
 
 
-## Factory Pattern Diagram
+### Profiler Before
 
-<img width="958" height="587" alt="image" src="https://github.com/user-attachments/assets/222a8c7e-80de-48a0-a5b6-458eaf77617e" />
-The roles in the Factory Pattern are:
+<img width="957" height="565" alt="Screenshot 2026-11-16 175255" src="https://github.com/user-attachments/assets/c2976116-7e8a-430c-83c9-5f28107e620b" />
 
-- BP_PowerupFactory - Creator / Base Factory
-- BP_HealthFactory and BP_SpeedFactory - Concrete Factories
-- BP_PowerUp - Base Product
-- BP_PowerUp_Child_HealUp and BP_PowerUp_Child_SpeedUp - Concrete Products
-- BP_FirstPersonGameMode - Client / Manager that decides when a Factory should be used
 
-The Factory children inherit the SpawnPowerup function from BP_PowerupFactory, while each child changes the PowerupClass value to determine which powerup gets created.
+Profiler results:
+
+- Selected Time: 4.98 seconds
+- WorldTick Count: 1,938
+- WorldTick Inclusive Time: 165.56 ms
+- WorldTick Average: 0.684 ms
+- WorldTick Maximum: 2.644 ms
+
+## After Optimization
+
+For the optimized version, I used the Singleton Pattern with a custom GameInstance called `BP_GI`.
+
+Instead of the GameManager searching through all of the actors every frame, each `BP_TestActor` adds its score to the shared `Score` variable in `BP_GI`.
+
+The GameManager then gets the stored score using:
+
+- `Get Game Instance`
+- `Cast To BP_GI`
+- `Get Score`
+
+This removes the need to find and loop through all 10,000 actors every frame.
+
+### BP_TestActor Blueprint
+
+<img width="895" height="279" alt="image" src="https://github.com/user-attachments/assets/3908c390-86a4-46f4-89e7-cd5d95dbb340" />
+
+
+### GameManager Blueprint
+
+<img width="933" height="437" alt="image" src="https://github.com/user-attachments/assets/275049f1-86c0-4d46-bd71-85310ecfcb55" />
+
+
+### Profiler After
+
+<img width="961" height="569" alt="Screenshot 2026-11-16 175301" src="https://github.com/user-attachments/assets/d71188d4-562d-446e-a0ed-6378f8207e66" />
+
+
+Profiler results:
+
+- Selected Time: 5.01 seconds
+- WorldTick Count: 135
+- WorldTick Inclusive Time: 4.08 ms
+- WorldTick Average: 0.272 ms
+- WorldTick Maximum: 0.423 ms
 
 ## Reflection
 
-### What element of your game adopts the chosen pattern?
+### What was impacting the performance?
 
-The powerup spawning system uses the Factory Pattern. BP_PowerupFactory contains the common spawning functionality, while its child factories decide which type of powerup is spawned.
+The GameManager was using `Get All Actors Of Class` every frame and looping through 10,000 TestActors. It also had to cast to every actor and add their score values together every frame.
 
-### Why is this pattern a good choice for the associated functionality?
+### Which pattern did you implement and what did it replace?
 
-The Factory Pattern works well because I have multiple powerups that use the same spawning process. Instead of writing separate spawning logic for each powerup, the parent Factory handles the spawning and the child Factories only decide what gets spawned.
+I used the Singleton Pattern with `BP_GI`.
 
-It also makes the system easier to expand because I can add another powerup and Factory child later without changing the main spawning system.
+It replaced the system where the GameManager repeatedly searched for all TestActors and calculated the score every frame.
 
-## External Assets
+The score is now stored in one shared variable inside the GameInstance.
 
-No external assets were used.
+### Did the pattern improve performance?
 
-## Release
+Yes.
 
-A packaged Windows build of the game is available in the **Releases** section of this repository.
+The average WorldTick time went from 0.684 ms before the optimization to 0.272 ms after the optimization.
+
+The maximum WorldTick time also went from 2.644 ms to 0.423 ms.
+
+This shows that removing the repeated actor search and loop reduced the amount of work being done.
+
+### What did the profiler show?
+
+Unreal Insights showed more WorldTick processing before the optimization.
+
+Before the change, WorldTick had 165.56 ms of inclusive CPU time during the selected period.
+
+After using the GameInstance, it went down to 4.08 ms during a similar selected period.
+
+The profiler showed that directly getting the stored score was more efficient than searching through all 10,000 actors every frame.
+
+
